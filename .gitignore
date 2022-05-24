@@ -1,0 +1,6 @@
+# python virtual env
+discordthemeldr/
+
+__pycache__/
+.vscode
+datastore.json
