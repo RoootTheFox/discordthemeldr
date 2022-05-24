@@ -8,7 +8,7 @@ which blocks loading resources (such as images and stylesheets) from third-party
 It achieves that by modifying Discord's response headers to make that policy more open. It also uses that opportunity
 to inject itself into the Discord client when you start it, loading your themes automatically.
 
-**TLDR:** It makes Discord allow loading 3rd party scripts by modifying its server responses.
+**TLDR:** It makes Discord allow loading 3rd party themes by modifying its server responses.
 
 <h2>Usage</h2>
 
