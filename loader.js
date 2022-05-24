@@ -58,7 +58,6 @@ function loadTheme(url) {
 
             themeName = _escapeID(themeName);
 
-            // TODO: check what betterdiscord specific things exist
             addTheme(themeName, data_string, url);
         });
 }
@@ -80,43 +79,18 @@ async function getEnabledThemes() {
 
 async function addTheme(name, css, url) {
     var theme = css;
-    if ( /*data.toString().contains("bd-")*/ true) {
+    if (data.toString().contains("bd-")) {
         console.log("* Patching theme");
 
-        // todo - add theme patching code here (if needed)
-
-        console.log("* Injecting theme");
-
-        _injectTheme(name, theme);
-    } else {
-        console.log("* Injecting theme");
-        let theme = document.createElement("link");
-        theme.rel = "stylesheet";
-        theme.href = url;
-        document.head.append(theme);
+        // TODO: check what betterdiscord specific things exist
+        // and add theme patching code here (if needed)
     }
 
-    console.log("adding to cookie");
-    var themes = await getThemes();
-    var found = false;
-    for (var i = 0; i < themes.length; i++) {
-        if (themes[i].name == name) {
-            console.log("found")
-            found = true;
-            themes[i].enabled = true;
-            themes[i].url = url;
-        }
-    }
+    console.log("* Injecting theme");
 
-    if (!found) {
-        console.log("not found, adding to themes array");
-        themes.push({
-            name: name,
-            enabled: true,
-            url: url
-        });
-    }
+    _injectTheme(name, theme);
 
+    console.log("adding to storage");
     fetch('https://discord.com/themeldr/modifytheme', {
             method: 'POST',
             headers: {
@@ -136,7 +110,9 @@ async function addTheme(name, css, url) {
 async function disableTheme(name) {
     var themes = await getThemes();
     for (var i = 0; i < themes.length; i++) {
+        var found = false;
         if (themes[i].name == name) {
+            found = true;
             themes[i].enabled = false;
             var response = await fetch('https://discord.com/themeldr/modifytheme', {
                 method: 'POST',
@@ -158,6 +134,7 @@ async function disableTheme(name) {
             }
         }
     }
+    if(!found) console.log("There is no theme named '" + name + "'.");
 }
 
 console.log("Functions loaded. Use loadTheme(\"url\") to load a theme and clearTheme() or CTRL-R to unload.");
