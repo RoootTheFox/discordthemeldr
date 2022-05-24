@@ -69,22 +69,6 @@ async function getThemes() {
     return res_json;
 }
 
-function setThemes(themes) {
-    fetch('https://httpbin.org/post', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                a: 7,
-                str: 'Some string: &=&'
-            })
-        }).then(res => res.json())
-        .then(res => console.log(res));
-    return setCookie("discordthemeldr-themes", themes);
-}
-
 async function getEnabledThemes() {
     var themes = await getThemes();
     var enabled = [];
@@ -147,8 +131,33 @@ async function addTheme(name, css, url) {
             })
         }).then(res => res.text())
         .then(res => console.log(res));
+}
 
-    setThemes(JSON.stringify(themes));
+async function disableTheme(name) {
+    var themes = await getThemes();
+    for (var i = 0; i < themes.length; i++) {
+        if (themes[i].name == name) {
+            themes[i].enabled = false;
+            var response = await fetch('https://discord.com/themeldr/modifytheme', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(themes[i])
+            });
+            if (response.status == 200) {
+                var id = "theme-" + _escapeID(name);
+                var style = document.getElementById(id)
+                if(style == null) {
+                    console.log("Theme is already disabled!");
+                    return;
+                }
+                document.head.removeChild(style);
+                console.log("Disabled theme " + name);
+            }
+        }
+    }
 }
 
 console.log("Functions loaded. Use loadTheme(\"url\") to load a theme and clearTheme() or CTRL-R to unload.");
@@ -158,10 +167,10 @@ console.log("Getting saved themes");
 async function themeldr_init() {
     var themes = await getThemes();
     var themes_enabled = await getEnabledThemes();
-    
+
     console.log("Themes: " + JSON.stringify(themes));
     console.log("Enabled: " + JSON.stringify(themes_enabled));
-    
+
     for (var i = 0; i < themes_enabled.length; i++) {
         if (themes_enabled[i].enabled) {
             loadTheme(themes_enabled[i].url);
@@ -169,4 +178,21 @@ async function themeldr_init() {
     }
 }
 
-setTimeout(themeldr_init(), 10);
+function enableDevMode() {
+    Object.defineProperty((webpackChunkdiscord_app.push([
+        [''], {},
+        e => {
+            m = [];
+            for (let c in e.c) m.push(e.c[c])
+        }
+    ]), m).find(m => m ?.exports ?.default ?.isDeveloper !== void 0).exports.default, "isDeveloper", {
+        get: () => true
+    });
+}
+
+setTimeout(function () {
+    themeldr_init()
+}, 10);
+setTimeout(function () {
+    enableDevMode()
+}, 3000);

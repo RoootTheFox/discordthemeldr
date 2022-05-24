@@ -8,7 +8,6 @@ def response(flow: http.HTTPFlow):
         flow.response.headers["content-security-policy"] = "default-src * 'unsafe-inline' 'unsafe-eval'; img-src * blob: data:; media-src * blob: data:"
         flow.response.headers["access-control-allow-origin"] = "*"
         if "content-type" in flow.response.headers:
-                print("content type is included in headers!")
                 if flow.response.headers["content-type"] == "text/html" and flow.request.pretty_url.startswith("https://discord.com/app"):
                         print("Received Discord App Response!")
                         print("Parsing HTML")
