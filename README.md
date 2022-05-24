@@ -4,7 +4,7 @@ A theme loader for unmodified Discord using a HTTP Proxy.
 <h2>How does it work?</h2>
 
 This project uses [mitmproxy](https://github.com/mitmproxy/mitmproxy) to bypass Discord's Content Security Policy
-which blocks loading resources (such as images and stylesheets) from third-party sources from loading.
+which blocks resources (such as images and stylesheets) from third-party sources from loading.
 It achieves that by modifying Discord's response headers to make that policy more open. It also uses that opportunity
 to inject itself into the Discord client when you start it, loading your themes automatically.
 
