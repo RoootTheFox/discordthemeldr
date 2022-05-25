@@ -62,18 +62,38 @@ function loadTheme(url) {
         });
 }
 
-async function getThemes() {
+async function _getThemes() {
     var response = await fetch("https://discord.com/themeldr/getthemes");
     var res_json = await response.json();
     return res_json;
 }
 
-async function getEnabledThemes() {
-    var themes = await getThemes();
+async function _getEnabledThemes() {
+    var themes = await _getThemes();
     var enabled = [];
     for (var i = 0; i < themes.length; i++) {
         if (themes[i].enabled) enabled.push(themes[i]);
     }
+    return enabled;
+}
+
+async function getThemes() {
+    var themes = await _getThemes();
+    console.log("~ Installed Themes ~");
+    for(var i = 0; i < themes.length; i++) {
+        console.log(themes[i].name + " (Enabled: " + themes[i].enabled);
+    }
+    console.log("~  --------------  ~");
+}
+
+async function getEnabledThemes() {
+    var themes = await _getEnabledThemes();
+    
+    console.log("~ Enabled Themes ~");
+    for (var i = 0; i < themes.length; i++) {
+        console.log(themes[i].name);
+    }
+    console.log("~  ------------  ~");
     return enabled;
 }
 
@@ -108,9 +128,9 @@ async function addTheme(name, css, url) {
 }
 
 async function disableTheme(name) {
-    var themes = await getThemes();
+    var themes = await _getThemes();
+    var found = false;
     for (var i = 0; i < themes.length; i++) {
-        var found = false;
         if (themes[i].name == name) {
             found = true;
             themes[i].enabled = false;
@@ -132,6 +152,21 @@ async function disableTheme(name) {
                 document.head.removeChild(style);
                 console.log("Disabled theme " + name);
             }
+            break;
+        }
+    }
+    if(!found) console.log("There is no theme named '" + name + "'.");
+}
+
+async function enableTheme(name) {
+    var themes = await _getThemes();
+    var found = false;
+    for (var i = 0; i < themes.length; i++) {
+        if (themes[i].name == name) {
+            found = true;
+            themes[i].enabled = true;
+            addTheme(themes[i].name, themes[i].data, themes[i].url);
+            break;
         }
     }
     if(!found) console.log("There is no theme named '" + name + "'.");
@@ -142,15 +177,22 @@ console.log("Functions loaded. Use loadTheme(\"url\") to load a theme and clearT
 console.log("Getting saved themes");
 
 async function themeldr_init() {
-    var themes = await getThemes();
-    var themes_enabled = await getEnabledThemes();
+    var themes = await _getThemes();
+    var themes_enabled = await _getEnabledThemes();
 
     console.log("Themes: " + JSON.stringify(themes));
     console.log("Enabled: " + JSON.stringify(themes_enabled));
 
     for (var i = 0; i < themes_enabled.length; i++) {
         if (themes_enabled[i].enabled) {
-            loadTheme(themes_enabled[i].url);
+            if(themes_enabled[i].data != "") {
+                var themeName = _escapeID(themes_enabled[i].name);
+                addTheme(themeName, themes_enabled[i].data, themes_enabled[i].url);
+            } else if(themes_enabled[i].url != "") {
+                loadTheme(themes_enabled[i].url);
+            } else {
+                console.log("!! Failed to load theme " + themes_enabled[i].name + ": No URL or data found!");
+            }
         }
     }
 }
