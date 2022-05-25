@@ -79,12 +79,12 @@ async function getEnabledThemes() {
 
 async function addTheme(name, css, url) {
     var theme = css;
-    if (theme.toString().contains("bd-")) {
+    /*if (theme.contains("bd-")) {
         console.log("* Patching theme");
 
         // TODO: check what betterdiscord specific things exist
         // and add theme patching code here (if needed)
-    }
+    }*/
 
     console.log("* Injecting theme");
 
