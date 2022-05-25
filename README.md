@@ -20,16 +20,19 @@ You need to have Python 3.10 and mitmproxy installed on your System. You can ins
 
 Linux: install them using your distro's package manager<br>
 macOS: no idea (look it up)<br>
-Windows: Download them here: [Python](https://www.python.org/downloads/windows/), [mitmproxy](https://mitmproxy.org/)
+Windows: Download them here: [Python](https://www.python.org/downloads/windows/) (the setup.bat script installs mitmproxy automatically)
 **(NOTE: When installing Python, make sure "Add to PATH" is checked!)**
 
 
 - Clone this repo:<br>[Download the latest version](https://github.com/RoootTheFox/discordthemeldr/archive/refs/heads/main.zip)
 and extract it somewhere you can remember<br>
 Alternatively, if you have `git` installed, you can use that by executing `git clone https://github.com/RoootTheFox/discordthemeldr` in a Terminal.
-
 - Open the folder you downloaded (and extracted) this repository to and open a Terminal<br>
-  - On Windows, shift+right click somewhere in the folder and click on "Open PowerShell Window here" (may be named slightly different)
+  - On Windows, shift+right click somewhere in the folder and click on "Open PowerShell Window here" (may be named slightly different)<br>
+  - On Linux: depends on your Distro/DE, if you are unsure open a Terminal and `cd` into the folder.
+
+- **For Linux and Windows there are scripts that automate the following steps!**<br>
+You can find them under `setup.sh` for Linux and `setup.bat` for Windows. If you don't want to use those, continue with the following steps:
 
 - Install the required modules for the project to work using the Terminal:<br>
 `pip install -r requirements.txt`<br>
