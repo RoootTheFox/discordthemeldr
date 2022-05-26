@@ -10,6 +10,13 @@ to inject itself into the Discord client when you start it, loading your themes 
 
 **TLDR:** It makes Discord allow loading 3rd party themes by modifying its server responses.
 
+<h2>Something important that should be mentioned</h2>
+
+Do not trust random people with installing and running programs and scripts on your computer,
+they could easily abuse that to gain access to your Discord account.
+Although this project won't do that, don't take my word for it and read the code yourself. If you do not know how to read the code, you probably should
+not be using this project (and generally other software too)
+
 <h2>Usage</h2>
 
 This project should support all major platforms that are supported by Discord.
