@@ -1,9 +1,15 @@
 #!/bin/bash
+discord_executable=$0
+
+if [ $discord_executable == "" ]; then
+   discord_executable=discord
+fi
+
 echo "discordthemeldr"
 this_path=$(dirname $(realpath $0))
 cd "$this_path"
 echo "Starting Discord"
-discord --proxy-server="127.0.0.1:8080" &
+$discord_executable proxy-server="127.0.0.1:8080" &
 pid=$!
 
 echo "Starting Proxy"
